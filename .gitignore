@@ -1,0 +1,7 @@
+.DS_STORE
+spk_xvector.ark
+config.yaml
+model.pth
+test.wav
+text.rtf
+venv/
