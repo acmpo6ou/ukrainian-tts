@@ -24,3 +24,23 @@ for word_file in words:
     with open(f"audio/{word['id']:05d}.wav", mode="wb") as file:
         _, _ = tts.tts(text, Voices.Dmytro.value, Stress.Dictionary.value, file)
     break
+
+
+def get_sentences(word: dict):
+    sentences = []
+
+
+def stressed_title(word: dict):
+    title = word['title']
+    stresses = word['stresses']
+
+    if len(stresses) == 1:
+        stress = stresses[0] - 1
+        return f"{title[:stress]}+{title[stress:]}"
+
+    result = ""
+    for stress in stresses:
+        result += f"{title[:stress-1]}+{title[stress-1:]}"
+        if stresses.index(stress)+1 != len(stresses):
+            result += " або "
+    return result
