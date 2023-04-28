@@ -18,10 +18,11 @@ tts = TTS(device="cpu")
 def get_sentences(word: dict):
     title = word['title']
     stresses = word['stresses']
+    desc = word['html_description'] or word['description']
     sentences = [stressed_title(title, stresses)]
     sentences.extend(
         stressed_sentence(sentence, title, stresses[0])
-        for sentence in word['html_description'].split("</p><p>")
+        for sentence in desc.split("</p><p>")
     )
     return sentences
 
