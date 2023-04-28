@@ -17,13 +17,18 @@ tts = TTS(device="cpu")
 
 def get_sentences(word: dict):
     title = word['title']
-    stresses = word['stresses']
     desc = word['html_description'] or word['description']
-    sentences = [stressed_title(title, stresses)]
-    sentences.extend(
-        stressed_sentence(sentence, title, stresses[0])
-        for sentence in desc.split("</p><p>")
-    )
+    stresses = word['stresses']
+
+    if stresses:
+        sentences = [stressed_title(title, stresses)]
+        sentences.extend(
+            stressed_sentence(sentence, title, stresses[0])
+            for sentence in desc.split("</p><p>")
+        )
+    else:
+        sentences = [title]
+        sentences.extend(sentence for sentence in desc.split("</p><p>"))
     return sentences
 
 
@@ -34,14 +39,14 @@ def stressed_title(title, stresses):
 
     result = ""
     for stress in stresses:
-        result += f"{title[:stress-1]}+{title[stress-1:]}"
-        if stresses.index(stress)+1 != len(stresses):
+        result += f"{title[:stress - 1]}+{title[stress - 1:]}"
+        if stresses.index(stress) + 1 != len(stresses):
             result += " або "
     return result
 
 
 def stressed_sentence(sentence, title, stress):
-    root = title[:stress-1]
+    root = title[:stress - 1]
     return sentence.replace(root, f"{root}+")
 
 
