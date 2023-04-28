@@ -54,10 +54,12 @@ for word_file in words:
 
     out = AudioSegment.empty()
     for sentence in get_sentences(word):
+        if not sentence:
+            continue
         file = NamedTemporaryFile("wb")
         _, _ = tts.tts(sentence, Voices.Dmytro.value, Stress.Dictionary.value, file)
 
         out += AudioSegment.from_file(file.name)
         out += AudioSegment.silent()
     out.export(f"audio/{word['id']:05d}.wav")
-    print(f"{word['title']}: Done.")
+    print(f"{word['id']:05d} {word['title']}: Done.")
